@@ -1,4 +1,4 @@
-package com.example.moetaz.movieapp.Models;
+package com.example.moetaz.movieapp.models;
 
 /**
  * Created by Moetaz on 11/10/2016.

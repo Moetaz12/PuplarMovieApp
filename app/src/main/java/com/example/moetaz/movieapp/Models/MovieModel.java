@@ -1,4 +1,4 @@
-package com.example.moetaz.movieapp.Models;
+package com.example.moetaz.movieapp.models;
 
 
 import java.io.Serializable;
@@ -15,7 +15,7 @@ public class MovieModel implements Serializable {
     private String overview;
     private String release_date;
     private String backdrop_path;
-    private double vote_average;
+    private String vote_average;
     private String id;
 
     public void setId(String id) {
@@ -39,7 +39,7 @@ public class MovieModel implements Serializable {
         this.backdrop_path = backdrop_path;
     }
 
-    public void setVote_average(double vote_average) {
+    public void setVote_average(String vote_average) {
         this.vote_average = vote_average;
     }
 
@@ -56,7 +56,7 @@ public class MovieModel implements Serializable {
         return backdrop_path;
     }
 
-    public double getVote_average() {
+    public String getVote_average() {
         return vote_average;
     }
 

@@ -1,10 +1,9 @@
-package com.example.moetaz.movieapp.Activity;
+package com.example.moetaz.movieapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.moetaz.movieapp.Adapter.CustomAdapter;
-import com.example.moetaz.movieapp.Fragment.MainFragment;
+import com.example.moetaz.movieapp.fragment.MainFragment;
 import com.example.moetaz.movieapp.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
     }
-
 
 
 

@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="ColorCard">#FFF</color>
+    <color name="voteimgColor">#00ffffff</color>
+    <color name="lineColor">#FF0000FF</color>
 
 </resources>

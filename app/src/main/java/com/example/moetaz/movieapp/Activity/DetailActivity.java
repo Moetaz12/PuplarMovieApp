@@ -1,18 +1,10 @@
-package com.example.moetaz.movieapp.Activity;
+package com.example.moetaz.movieapp.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.moetaz.movieapp.Fragment.DetailFragment;
-import com.example.moetaz.movieapp.Fragment.MainFragment;
+import com.example.moetaz.movieapp.fragment.DetailFragment;
 import com.example.moetaz.movieapp.R;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by Moetaz on 11/4/2016.

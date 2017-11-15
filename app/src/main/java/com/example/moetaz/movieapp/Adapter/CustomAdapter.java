@@ -1,4 +1,4 @@
-package com.example.moetaz.movieapp.Adapter;
+package com.example.moetaz.movieapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.example.moetaz.movieapp.Activity.DetailActivity;
-import com.example.moetaz.movieapp.Activity.MainActivity;
-import com.example.moetaz.movieapp.Fragment.DetailFragment;
-import com.example.moetaz.movieapp.Models.MovieModel;
+import android.widget.Toast;
+
+import com.example.moetaz.movieapp.activity.DetailActivity;
+import com.example.moetaz.movieapp.activity.MainActivity;
+import com.example.moetaz.movieapp.utilities.MyUtilities;
+import com.example.moetaz.movieapp.fragment.DetailFragment;
+import com.example.moetaz.movieapp.models.MovieModel;
 import com.example.moetaz.movieapp.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,9 +29,9 @@ import java.util.ArrayList;
  */
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
-
-    Context context;
-    ArrayList<MovieModel> data;
+    private final String BaseUrl ="http://image.tmdb.org/t/p/w185/";
+    private Context context;
+    private ArrayList<MovieModel> data;
 
     public CustomAdapter(Context context, ArrayList<MovieModel> data) {
         this.context=context;
@@ -45,7 +50,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final MovieModel moviemodel = data.get(position);
 
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+moviemodel.getPoster_path()).into(holder.imgview);
+        if(MyUtilities.isNetworkConnected(context)){
+            Picasso.with(context).load(BaseUrl+moviemodel.getPoster_path()).into(holder.imgview);
+        }
+        else
+        Picasso.with(context).load(BaseUrl+moviemodel.getPoster_path())
+                .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imgview, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         holder.imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +88,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
