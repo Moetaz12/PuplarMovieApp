@@ -41,6 +41,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.BACK_BATH;
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.CONTENT_URI_1;
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.CONTENT_URI_2;
@@ -58,11 +63,12 @@ import static com.example.moetaz.movieapp.utilities.MyUtilities.message;
  * A simple {@link Fragment} subclass.
  */
 public class DetailFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+     @BindView(R.id.textTitle) TextView textViewtitle;
+     @BindView(R.id.textOverview) TextView textViewOverviwe;  //resume other views later
+
     public boolean FirstTimeLoad = false;
     public boolean FirstTimeLoad1 = false;
-    public boolean IsMarkedAsFav = false;
     private ContentResolver contentResolver;
-
     private final String BaseUrl = "http://image.tmdb.org/t/p/w185/";
     private ImageView imageView;
     private String imgurl;
@@ -70,13 +76,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
 
     private MovieModel movie;
     private CardView cardView1,cardView2,cardView3;
-    private TextView textViewtitle,textViewOverviwe,textViewreleaseDate,textViewVoteAverage
+    private TextView  textViewreleaseDate,textViewVoteAverage
              ,textViewReview1,textViewReview2,textViewReview3
              ,textViewAuther1,textViewAuther2,textViewAuther3
              ,textViewurl1,textViewurl2,textViewurl3;
     private ImageView imageViewauther1,imageViewauther2,imageViewauther3;
     private ImageButton imageButton;
-
+    Unbinder unbind;
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -84,33 +90,27 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("DetailModel",movie);
+
+        outState.putParcelable("DetailModel",movie);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState != null){
-            movie = (MovieModel) savedInstanceState.getSerializable("DetailModel");
-        }
-    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contentResolver = getActivity().getContentResolver();
         if(savedInstanceState != null){
-            message(getActivity(),"savedInstanceState Not null");
-            movie = (MovieModel) savedInstanceState.getSerializable("DetailModel");
+            movie =  savedInstanceState.getParcelable("DetailModel");
         }else{
-            message(getActivity(),"savedInstanceState null");
+
             Intent intent = getActivity().getIntent();
-            movie = (MovieModel) intent.getSerializableExtra("modelPass");
+            movie =  intent.getParcelableExtra("modelPass");
             if(movie == null)
                 movie = (MovieModel) getArguments().getSerializable("modelPass");
         }
 
-
+        assert movie != null;
         imgurl= movie.getPoster_path();
         MovieID = movie.getId();
         if (!FirstTimeLoad){
@@ -119,23 +119,18 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
         else{
             getLoaderManager().restartLoader(2,null,this );
         }
-    } //inc@t!ec
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootview=inflater.inflate(R.layout.fragment_detail, container, false);
-
+          unbind =ButterKnife.bind(this,rootview);
         imageView= (ImageView)rootview.findViewById(R.id.image_detail);
-        textViewtitle= (TextView) rootview.findViewById(R.id.textTitle);
-        textViewOverviwe= (TextView) rootview.findViewById(R.id.textOverview);
+
         textViewreleaseDate= (TextView) rootview.findViewById(R.id.textrelaesDate);
         textViewVoteAverage= (TextView) rootview.findViewById(R.id.textVoteAverage);
         cardView1= (CardView) rootview.findViewById(R.id.cardview1);
@@ -483,5 +478,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 break;
             default:break;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbind.unbind();
     }
 }

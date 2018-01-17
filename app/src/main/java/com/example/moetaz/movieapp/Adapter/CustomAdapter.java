@@ -41,9 +41,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_row, parent, false);
-
-        MyViewHolder holder=new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -63,7 +61,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
             @Override
             public void onError() {
-                Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,context.getString(R.string.error_msg),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,7 +76,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 else {
                     DetailFragment detailFragment=new DetailFragment();
                     Bundle b=new Bundle();
-                    b.putSerializable("modelPass",moviemodel);
+                    b.putParcelable("modelPass",moviemodel);
                     detailFragment.setArguments(b);
                     ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fdetail,detailFragment)

@@ -4,7 +4,6 @@ package com.example.moetaz.movieapp.fragment;
 import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -47,11 +46,11 @@ import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.REL
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.TITLE;
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.VOTE;
 import static com.example.moetaz.movieapp.utilities.MyUtilities.isNetworkConnected;
-import static com.example.moetaz.movieapp.utilities.MyUtilities.message;
 
 
 public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String LIST_KEY = "list";
     private GridLayoutManager gridLayoutManager;
     public boolean FirstTimeLoad = false;
     private RecyclerView recyclerView;
@@ -70,23 +69,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("list",movies);
+        //outState.putSerializable("list",movies);
+        outState.putParcelableArrayList(LIST_KEY, movies);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-         if(savedInstanceState != null) {
-             ArrayList<MovieModel> m;
-             m = (ArrayList<MovieModel>) savedInstanceState.getSerializable("list");
-             SetGridManager();
-             recyclerView.setLayoutManager(gridLayoutManager);
-             movies.clear();
-             movies.addAll(0, m);
-             customAdapter = new CustomAdapter(getActivity(), movies);
-             recyclerView.setAdapter(customAdapter);
-         }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,16 +84,15 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         progressDialog.setMessage("Loading ...");
         dbAdadpter = DBAdadpter.getDBAdadpterInstance(getActivity());
         setHasOptionsMenu(true);
-        if(savedInstanceState != null) {
-            ArrayList<MovieModel> m;
-            m = (ArrayList<MovieModel>) savedInstanceState.getSerializable("list");
-            SetGridManager();
+        if (savedInstanceState != null) {
+            ArrayList<MovieModel> m = savedInstanceState.getParcelableArrayList(LIST_KEY);
+            setGridManager();
             recyclerView.setLayoutManager(gridLayoutManager);
             movies.clear();
             movies.addAll(0, m);
             customAdapter = new CustomAdapter(getActivity(), movies);
             recyclerView.setAdapter(customAdapter);
-        }else{
+        } else {
             LoadMain(currentURL);
         }
         return rootView;
@@ -115,53 +100,52 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     public void LoadMain(String url) {
         progressDialog.show();
-        SetGridManager();
+        setGridManager();
         recyclerView.setLayoutManager(gridLayoutManager);
 
-            if (isNetworkConnected(getActivity())) {
-                customAdapter = new CustomAdapter(getActivity(), movies);
-                recyclerView.setAdapter(customAdapter);
-                LoadByVolley(url);
+        if (isNetworkConnected(getActivity())) {
+            customAdapter = new CustomAdapter(getActivity(), movies);
+            recyclerView.setAdapter(customAdapter);
+            LoadByVolley(url);
 
-            } else {
-                progressDialog.dismiss();
-                customAdapter = new CustomAdapter(getActivity(), dbAdadpter.GetData());
-                recyclerView.setAdapter(customAdapter);
-            }
+        } else {
+            progressDialog.dismiss();
+            customAdapter = new CustomAdapter(getActivity(), dbAdadpter.GetData());
+            recyclerView.setAdapter(customAdapter);
+        }
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-          index = gridLayoutManager.findFirstVisibleItemPosition();
-          View v = recyclerView.getChildAt(0);
-         top = (v==null)?0:(v.getTop() -recyclerView.getPaddingTop());
+        index = gridLayoutManager.findFirstVisibleItemPosition();
+        View v = recyclerView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - recyclerView.getPaddingTop());
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(index != -1)
-            gridLayoutManager.scrollToPositionWithOffset(index,top);
+        if (index != -1)
+            gridLayoutManager.scrollToPositionWithOffset(index, top);
     }
 
-		@Override
-		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-			inflater.inflate(R.menu.main, menu);
-		}
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
 
-    private void DeleteData()
-    {
-        if (movies != null){
+    private void DeleteData() {
+        if (movies != null) {
             movies.clear();
-             customAdapter.notifyDataSetChanged();
+            customAdapter.notifyDataSetChanged();
         }
     }
 
-    private void LoadByVolley(String url){
-        String baseUrl = "http://api.themoviedb.org/3"+url+"?";
+    private void LoadByVolley(String url) {
+        String baseUrl = "http://api.themoviedb.org/3" + url + "?";
         String apiKey = "api_key=" + BuildConfig.MOVIE_APP_API_KEY;
         String lasturl = baseUrl.concat(apiKey);
 
@@ -173,7 +157,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                 String data = new String(entry.data, "UTF-8");
                 DeleteData();
                 Iterator iterator = Parse.parseStringToJson(data).iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     MovieModel movie = (MovieModel) iterator.next();
                     movies.add(movie);
                     customAdapter.notifyItemInserted(movies.size() - 1);
@@ -183,40 +167,41 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                 e.printStackTrace();
             }
 
-        }else {
+        } else {
 
-             dbAdadpter.DeleteAllDate();
+            dbAdadpter.DeleteAllDate();
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, lasturl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                DeleteData();
-                Iterator iterator = Parse.parseStringToJson(response).iterator();
-                while (iterator.hasNext()){
-                    MovieModel movie = (MovieModel) iterator.next();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, lasturl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    DeleteData();
+                    Iterator iterator = Parse.parseStringToJson(response).iterator();
+                    while (iterator.hasNext()) {
+                        MovieModel movie = (MovieModel) iterator.next();
 
-                    dbAdadpter.Insert(movie.getOriginal_title(),movie.getTitle(),movie.getPoster_path()
-                    ,movie.getOverview(),movie.getRelease_date(),movie.getBackdrop_path(),
-                            String.valueOf(movie.getVote_average()),movie.getId());
+                        dbAdadpter.Insert(movie.getOriginal_title(), movie.getTitle(), movie.getPoster_path()
+                                , movie.getOverview(), movie.getRelease_date(), movie.getBackdrop_path(),
+                                String.valueOf(movie.getVote_average()), movie.getId());
 
-                    movies.add(movie);
-                    customAdapter.notifyItemInserted(movies.size() - 1);
+                        movies.add(movie);
+                        customAdapter.notifyItemInserted(movies.size() - 1);
 
+                    }
+
+                    progressDialog.dismiss();
                 }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-                progressDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                MyUtilities.message(getActivity(),"Something went Wrong");
-            }
-        });
+                    MyUtilities.message(getActivity(), getString(R.string.error_msg));
+                }
+            });
             Mysingleton.getInstance(getActivity()).addToRequest(stringRequest);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -229,15 +214,14 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             currentURL = "/movie/popular";
             LoadMain(currentURL);
         } else if (id == R.id.refresh) {
-                LoadMain(currentURL);
+            LoadMain(currentURL);
 
-        }
-        else if(id==R.id.favourite){
-            if (!FirstTimeLoad){
+        } else if (id == R.id.favourite) {
+            if (!FirstTimeLoad) {
                 FirstTimeLoad = true;
-            getLoaderManager().initLoader(1,null,this);}
-            else{
-                getLoaderManager().restartLoader(1,null,this );
+                getLoaderManager().initLoader(1, null, this);
+            } else {
+                getLoaderManager().restartLoader(1, null, this);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -245,8 +229,8 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(id == 1){
-            return new CursorLoader(getContext(),CONTENT_URI_1,null,null,null,null);
+        if (id == 1) {
+            return new CursorLoader(getContext(), CONTENT_URI_1, null, null, null, null);
         }
         return null;
     }
@@ -256,11 +240,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
         ArrayList<MovieModel> movieModels = new ArrayList<>();
 
-        if(cursor.getCount()> 0 && cursor !=null){
+        if (cursor != null && cursor.getCount() > 0) {
 
-            while(cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 MovieModel movieModel = new MovieModel();
-
                 movieModel.setOriginal_title(cursor.getString(cursor.getColumnIndex(ORIGINAL_TITLE)));
                 movieModel.setTitle(cursor.getString(cursor.getColumnIndex(TITLE)));
                 movieModel.setPoster_path(cursor.getString(cursor.getColumnIndex(POSTER_PATH)));
@@ -273,9 +256,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
             }
         }
+        assert cursor != null;
         cursor.close();
         DeleteData();
-        movies.addAll(0,movieModels);
+        movies.addAll(0, movieModels);
         customAdapter.notifyDataSetChanged();
     }
 
@@ -284,10 +268,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    private void SetGridManager(){
-        gridLayoutManager=new GridLayoutManager(getActivity(), 2);
+    private void setGridManager() {
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
-        if(MainActivity.IsTowPane)
+        if (MainActivity.IsTowPane)
             gridLayoutManager = new GridLayoutManager(getActivity(), 3);
 
         recyclerView.setLayoutManager(gridLayoutManager);
