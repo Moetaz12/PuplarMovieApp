@@ -35,7 +35,9 @@ public class Mysingleton {
         return mInstacne;
     }
 
-    public <T>void addToRequest (Request<T> request){
+    public <T> void addToRequest (Request<T> request){
         requestQueue.add(request);
     }
+
+
 }

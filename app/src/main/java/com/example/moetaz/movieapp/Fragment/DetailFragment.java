@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -57,32 +56,62 @@ import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.REL
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.TITLE;
 import static com.example.moetaz.movieapp.interfaces.MoviesProivderConstants.VOTE;
 import static com.example.moetaz.movieapp.utilities.MyUtilities.isNetworkConnected;
-import static com.example.moetaz.movieapp.utilities.MyUtilities.message;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DetailFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
-     @BindView(R.id.textTitle) TextView textViewtitle;
-     @BindView(R.id.textOverview) TextView textViewOverviwe;  //resume other views later
-
+    private static final String MODEL_KEY = "DetailModel";
+    @BindView(R.id.textTitle)
+    TextView textViewtitle;
+    @BindView(R.id.textOverview)
+    TextView textViewOverviwe;
+    @BindView(R.id.textrelaesDate)
+    TextView textViewreleaseDate;
+    @BindView(R.id.textVoteAverage)
+    TextView textViewVoteAverage;
+    @BindView(R.id.cardview1)
+    CardView cardView1;
+    @BindView(R.id.cardview2)
+    CardView cardView2;
+    @BindView(R.id.cardview3)
+    CardView cardView3;
+    @BindView(R.id.textreviwe1)
+    TextView textViewReview1;
+    @BindView(R.id.textreviwe2)
+    TextView textViewReview2;
+    @BindView(R.id.textreviwe3)
+    TextView textViewReview3;
+    @BindView(R.id.auther1)
+    TextView textViewAuther1;
+    @BindView(R.id.auther2)
+    TextView textViewAuther2;
+    @BindView(R.id.auther3)
+    TextView textViewAuther3;
+    @BindView(R.id.texturl1)
+    TextView textViewurl1;
+    @BindView(R.id.texturl2)
+    TextView textViewurl2;
+    @BindView(R.id.texturl3)
+    TextView textViewurl3;
+    @BindView(R.id.imageAuther1)
+    ImageView imageViewauther1;
+    @BindView(R.id.imageAuther2)
+    ImageView imageViewauther2;
+    @BindView(R.id.imageAuther3)
+    ImageView imageViewauther3;
+    @BindView(R.id.image_detail)
+    ImageView imageView;
+    @BindView(R.id.favoriteButton)
+    ImageButton imageButton;
     public boolean FirstTimeLoad = false;
     public boolean FirstTimeLoad1 = false;
     private ContentResolver contentResolver;
     private final String BaseUrl = "http://image.tmdb.org/t/p/w185/";
-    private ImageView imageView;
-    private String imgurl;
-    private String MovieID;
-
+    private String imgurl, movieID;
     private MovieModel movie;
-    private CardView cardView1,cardView2,cardView3;
-    private TextView  textViewreleaseDate,textViewVoteAverage
-             ,textViewReview1,textViewReview2,textViewReview3
-             ,textViewAuther1,textViewAuther2,textViewAuther3
-             ,textViewurl1,textViewurl2,textViewurl3;
-    private ImageView imageViewauther1,imageViewauther2,imageViewauther3;
-    private ImageButton imageButton;
     Unbinder unbind;
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -90,97 +119,70 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putParcelable("DetailModel",movie);
+        outState.putParcelable(MODEL_KEY, movie);
     }
-
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         contentResolver = getActivity().getContentResolver();
-        if(savedInstanceState != null){
-            movie =  savedInstanceState.getParcelable("DetailModel");
-        }else{
+        if (savedInstanceState != null) {
+            movie = savedInstanceState.getParcelable(MODEL_KEY);
+        } else {
 
             Intent intent = getActivity().getIntent();
-            movie =  intent.getParcelableExtra("modelPass");
-            if(movie == null)
+            movie = intent.getParcelableExtra("modelPass");
+            if (movie == null)
                 movie = (MovieModel) getArguments().getSerializable("modelPass");
         }
 
         assert movie != null;
-        imgurl= movie.getPoster_path();
-        MovieID = movie.getId();
-        if (!FirstTimeLoad){
+        imgurl = movie.getPoster_path();
+        movieID = movie.getId();
+        if (!FirstTimeLoad) {
             FirstTimeLoad = true;
-            getLoaderManager().initLoader(2,null,this);}
-        else{
-            getLoaderManager().restartLoader(2,null,this );
+            getLoaderManager().initLoader(2, null, this);
+        } else {
+            getLoaderManager().restartLoader(2, null, this);
         }
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootview=inflater.inflate(R.layout.fragment_detail, container, false);
-          unbind =ButterKnife.bind(this,rootview);
-        imageView= (ImageView)rootview.findViewById(R.id.image_detail);
-
-        textViewreleaseDate= (TextView) rootview.findViewById(R.id.textrelaesDate);
-        textViewVoteAverage= (TextView) rootview.findViewById(R.id.textVoteAverage);
-        cardView1= (CardView) rootview.findViewById(R.id.cardview1);
-        cardView2= (CardView) rootview.findViewById(R.id.cardview2);
-        cardView3= (CardView) rootview.findViewById(R.id.cardview3);
-        textViewReview1= (TextView) rootview.findViewById(R.id.textreviwe1);
-        textViewReview2= (TextView) rootview.findViewById(R.id.textreviwe2);
-        textViewReview3= (TextView) rootview.findViewById(R.id.textreviwe3);
-        textViewAuther1= (TextView) rootview.findViewById(R.id.auther1);
-        textViewAuther2= (TextView) rootview.findViewById(R.id.auther2);
-        textViewAuther3= (TextView) rootview.findViewById(R.id.auther3);
-        imageViewauther1= (ImageView) rootview.findViewById(R.id.imageAuther1);
-        imageViewauther2= (ImageView) rootview.findViewById(R.id.imageAuther2);
-        imageViewauther3= (ImageView) rootview.findViewById(R.id.imageAuther3);
-        textViewurl1= (TextView) rootview.findViewById(R.id.texturl1);
-        textViewurl2= (TextView) rootview.findViewById(R.id.texturl2);
-        textViewurl3= (TextView) rootview.findViewById(R.id.texturl3);
-        imageButton= (ImageButton) rootview.findViewById(R.id.favoriteButton);
-
-        Loadimg();
-
+        View rootview = inflater.inflate(R.layout.fragment_detail, container, false);
+        unbind = ButterKnife.bind(this, rootview);
         textViewtitle.setText(movie.getOriginal_title());
         textViewOverviwe.setText(movie.getOverview());
         textViewreleaseDate.setText(movie.getRelease_date());
         textViewVoteAverage.setText(movie.getVote_average());
-
-        LoadReviewByVolley(MovieID);
-        LoadTrailerByVolley(MovieID);
-
+        loadImage();
+        LoadReviews(movieID);
+        LoadTrailers(movieID);
         imageButton.setOnClickListener(this);
 
         return rootview;
     }
 
-    public void InsertByResolver(){
+    public void InsertByResolver() {
         ContentValues cv = new ContentValues();
-        cv.put(ORIGINAL_TITLE,movie.getOriginal_title());
-        cv.put(TITLE,movie.getTitle());
-        cv.put(POSTER_PATH,movie.getPoster_path());
-        cv.put(OVERVIEW,movie.getOverview());
-        cv.put(RELEASE_DATE,movie.getRelease_date());
-        cv.put(BACK_BATH,movie.getBackdrop_path());
-        cv.put(MOVIE_ID, MovieID);
-        cv.put(VOTE,movie.getVote_average());
-        contentResolver.insert(CONTENT_URI_1,cv);
+        cv.put(ORIGINAL_TITLE, movie.getOriginal_title());
+        cv.put(TITLE, movie.getTitle());
+        cv.put(POSTER_PATH, movie.getPoster_path());
+        cv.put(OVERVIEW, movie.getOverview());
+        cv.put(RELEASE_DATE, movie.getRelease_date());
+        cv.put(BACK_BATH, movie.getBackdrop_path());
+        cv.put(MOVIE_ID, movieID);
+        cv.put(VOTE, movie.getVote_average());
+        contentResolver.insert(CONTENT_URI_1, cv);
     }
 
-    public void DeleteByResolver(String id){
+    public void DeleteByResolver(String id) {
         contentResolver.delete(CONTENT_URI_1
-                ,MOVIE_ID +" = ?",new String[]{id});
+                , MOVIE_ID + " = ?", new String[]{id});
     }
 
     @Override
@@ -190,10 +192,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    public void LoadReviewByVolley (String id){
+    public void LoadReviews(String id) {
         final ArrayList<ReviewModel> reviewModels = new ArrayList<>();
 
-        String baseUrl = "http://api.themoviedb.org/3/movie/"+id+"/reviews?";
+        String baseUrl = "http://api.themoviedb.org/3/movie/" + id + "/reviews?";
         String apiKey = "api_key=" + BuildConfig.MOVIE_APP_API_KEY;
         String lasturl = baseUrl.concat(apiKey);
         Cache cache = Mysingleton.getInstance(getActivity()).getRequestQueue().getCache();
@@ -203,7 +205,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 String data = new String(entry.data, "UTF-8");
 
                 Iterator iterator = Parse.ParseReview(data).iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     ReviewModel reviewModel = (ReviewModel) iterator.next();
                     reviewModels.add(reviewModel);
 
@@ -215,13 +217,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 e.printStackTrace();
             }
 
-        }else {
+        } else {
             StringRequest stringRequest = new StringRequest(Request.Method.GET, lasturl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
 
                     Iterator iterator = Parse.ParseReview(response).iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
 
                         ReviewModel reviewModel = (ReviewModel) iterator.next();
                         reviewModels.add(reviewModel);
@@ -241,22 +243,22 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
         }
     }
 
-    public void LoadTrailerByVolley (String id){
+    public void LoadTrailers(String id) {
         final ArrayList<TrailerModel> trailerModels = new ArrayList<>();
 
-        String baseUrl = "http://api.themoviedb.org/3/movie/"+id+"/videos?";
+        String baseUrl = "http://api.themoviedb.org/3/movie/" + id + "/videos?";
         String apiKey = "api_key=" + BuildConfig.MOVIE_APP_API_KEY;
         String lasturl = baseUrl.concat(apiKey);
 
         Cache cache = Mysingleton.getInstance(getActivity()).getRequestQueue().getCache();
         Cache.Entry entry = cache.get(lasturl);
         if (entry != null) {
-            Toast.makeText(getContext(),"in",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "in", Toast.LENGTH_SHORT).show();
             try {
                 String data = new String(entry.data, "UTF-8");
 
                 Iterator iterator = Parse.ParseTrailer(data).iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     TrailerModel trailerModel = (TrailerModel) iterator.next();
                     trailerModels.add(trailerModel);
 
@@ -268,14 +270,14 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 e.printStackTrace();
             }
 
-        }else {
+        } else {
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, lasturl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
 
                     Iterator iterator = Parse.ParseTrailer(response).iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
 
                         TrailerModel trailerModel = (TrailerModel) iterator.next();
                         trailerModels.add(trailerModel);
@@ -296,9 +298,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
         }
     }
 
-    private void fillReview(final ArrayList<ReviewModel> Reviwelist){
-        int size=Reviwelist.size();
-        if(size>=1){
+    private void fillReview(final ArrayList<ReviewModel> Reviwelist) {
+        int size = Reviwelist.size();
+        if (size >= 1) {
             textViewReview1.setText(Reviwelist.get(0).getContent());
             textViewAuther1.setText(Reviwelist.get(0).getAuthor());
             textViewurl1.setText(Reviwelist.get(0).getUrl());
@@ -308,14 +310,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                     GoToLink(Reviwelist.get(0).getUrl());
                 }
             });
-        }
-        else {
+        } else {
             imageViewauther1.setVisibility(View.GONE);
             textViewReview1.setVisibility(View.GONE);
             textViewurl1.setVisibility(View.GONE);
         }
 
-        if(size>=2){
+        if (size >= 2) {
             textViewReview2.setText(Reviwelist.get(1).getContent());
             textViewAuther2.setText(Reviwelist.get(1).getAuthor());
             textViewurl2.setText(Reviwelist.get(1).getUrl());
@@ -326,15 +327,14 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                     GoToLink(Reviwelist.get(1).getUrl());
                 }
             });
-        }
-        else {
+        } else {
             imageViewauther2.setVisibility(View.GONE);
             textViewReview2.setVisibility(View.GONE);
             textViewurl2.setVisibility(View.GONE);
         }
 
 
-        if(size>=3) {
+        if (size >= 3) {
             textViewReview3.setText(Reviwelist.get(2).getContent());
             textViewAuther3.setText(Reviwelist.get(2).getAuthor());
             textViewurl3.setText(Reviwelist.get(2).getUrl());
@@ -345,41 +345,40 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                     GoToLink(Reviwelist.get(2).getUrl());
                 }
             });
-        }
-        else{
+        } else {
             imageViewauther3.setVisibility(View.GONE);
             textViewReview3.setVisibility(View.GONE);
             textViewurl3.setVisibility(View.GONE);
         }
     }
 
-    private void GoToLink(String Rurl){
-        Intent intent=null, chooser=null;
+    private void GoToLink(String Rurl) {
+        Intent intent = null, chooser = null;
 
-        intent=new Intent(Intent.ACTION_VIEW);
+        intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(Rurl));
 
-        chooser=Intent.createChooser(intent,"open...");
-        if(intent.resolveActivity(getContext().getPackageManager())!=null){
+        chooser = Intent.createChooser(intent, "open...");
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivity(chooser);
 
         }
     }
 
-    private void fillTrailers (final ArrayList<TrailerModel> Trailerlist){
-        int size=Trailerlist.size();
+    private void fillTrailers(final ArrayList<TrailerModel> Trailerlist) {
+        int size = Trailerlist.size();
 
-        if(size>=1){
+        if (size >= 1) {
             cardView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     WatchTrailers(Trailerlist.get(0).getKey());
                 }
             });
-        }else {
+        } else {
             cardView1.setVisibility(View.GONE);
         }
-        if(size>=2){
+        if (size >= 2) {
             cardView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -387,48 +386,48 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 }
             });
 
-        }else {
+        } else {
             cardView2.setVisibility(View.GONE);
         }
 
-        if (size>=3){
+        if (size >= 3) {
             cardView3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     WatchTrailers(Trailerlist.get(2).getKey());
                 }
             });
-        }else {
+        } else {
             cardView3.setVisibility(View.GONE);
         }
     }
 
-    private void WatchTrailers(String id){
-        Intent appintent=new Intent(Intent.ACTION_VIEW,Uri.parse("vnd.youtube:"+id));
-        Intent webintent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+id));
+    private void WatchTrailers(String id) {
+        Intent appintent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + id));
         try {
             startActivity(appintent);
-        }catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             startActivity(webintent);
         }
 
     }
 
-    private void Loadimg(){
-        if(isNetworkConnected(getActivity()))
-        Picasso.with(getActivity()).load(BaseUrl+imgurl).into(imageView);
+    private void loadImage() {
+        if (isNetworkConnected(getActivity()))
+            Picasso.with(getActivity()).load(BaseUrl + imgurl).into(imageView);
         else
-            Picasso.with(getActivity()).load(BaseUrl+imgurl)
+            Picasso.with(getActivity()).load(BaseUrl + imgurl)
                     .networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        if(id == 2){
-            return new CursorLoader(getContext(),CONTENT_URI_2,null,null,new String []{MovieID},null);
-        }else if(id == 3){
-            return new CursorLoader(getContext(),CONTENT_URI_2,null,null,new String []{MovieID},null);
+        if (id == 2) {
+            return new CursorLoader(getContext(), CONTENT_URI_2, null, null, new String[]{movieID}, null);
+        } else if (id == 3) {
+            return new CursorLoader(getContext(), CONTENT_URI_2, null, null, new String[]{movieID}, null);
         }
         return null;
     }
@@ -436,7 +435,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        if(loader.getId() == 2) {
+        if (loader.getId() == 2) {
             if (cursor.getCount() > 0) {
 
                 imageButton.setImageResource(R.drawable.button_pressed);
@@ -445,11 +444,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
                 imageButton.setImageResource(R.drawable.button_normal);
             }
             cursor.close();
-        }
-        else if (loader.getId() == 3){
+        } else if (loader.getId() == 3) {
             if (cursor.getCount() > 0) {
                 imageButton.setImageResource(R.drawable.button_normal);
-                DeleteByResolver(MovieID);
+                DeleteByResolver(movieID);
             } else {
                 imageButton.setImageResource(R.drawable.button_pressed);
                 InsertByResolver();
@@ -466,17 +464,17 @@ public class DetailFragment extends Fragment implements View.OnClickListener, Lo
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.favoriteButton:
                 if (!FirstTimeLoad1) {
                     FirstTimeLoad1 = true;
-                    getLoaderManager().initLoader(3,null,this);
-                }
-                else{
-                    getLoaderManager().restartLoader(3,null,this );
+                    getLoaderManager().initLoader(3, null, this);
+                } else {
+                    getLoaderManager().restartLoader(3, null, this);
                 }
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 
