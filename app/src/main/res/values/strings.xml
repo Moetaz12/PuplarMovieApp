@@ -1,11 +1,3 @@
 <resources>
-    <string name="app_name">MovieApp</string>
-    <string name="detail_name">Detail Movie</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="trailer1title">TRAILER 1</string>
-    <string name="trailer2title">TRAILER 2</string>
-    <string name="trailer3title">TRAILER 3</string>
-    <string name="error_msg">Something went Wrong</string>
-
+    <string name="app_name">PopularMoviesApp</string>
 </resources>
