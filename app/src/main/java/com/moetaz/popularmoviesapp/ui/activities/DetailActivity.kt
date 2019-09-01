@@ -1,12 +1,13 @@
-package com.moetaz.popularmoviesapp
+package com.moetaz.popularmoviesapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.moetaz.popularmoviesapp.R
 
-class MainActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.movie_row)
+        setContentView(R.layout.activity_detail)
     }
 }

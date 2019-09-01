@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.DetailFragment">
+
+    <TextView
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:elevation="1dp"
+            android:textColor="#D1A8A8"
+            android:textSize="13sp"
+            android:text="105 minmmkmfkm;vm vlfdlvkldfv lfdvl vlfdvklnfdvnldfvnflnvfnvlfdnvldfnvmfknv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/textView9"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar"/>
+
+    <TextView
+            android:textStyle="bold"
+            android:elevation="1dp"
+            android:textColor="#CCB1B1"
+            android:textSize="16dp"
+            android:text="Action , Adventure and Family "
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            android:layout_marginTop="16dp"/>
+
+    <TextView
+            android:padding="3dp"
+            android:background="@drawable/duration_shape"
+            android:textStyle="bold"
+            android:elevation="1dp"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:text="105 min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView7"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"/>
+
+    <TextView
+            android:textStyle="bold"
+            android:elevation="1dp"
+            android:textColor="#000"
+            android:textSize="21dp"
+            android:text="The Lion King 2019"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"/>
+
+    <ImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:id="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+            android:scaleType="fitXY"
+            android:src="@drawable/poster"
+            android:layout_width="150dp"
+            android:layout_height="250dp"
+            android:id="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_play"
+            app:fabCustomSize="70dp"
+            app:maxImageSize="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/floatingActionButton"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintVertical_bias="0.515"/>
+
+    <RatingBar
+
+            android:rating="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
+            android:isIndicator="true"
+            android:id="@+id/ratingBar"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            android:id="@+id/recyclerView"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
