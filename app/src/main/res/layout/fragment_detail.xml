@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -8,126 +7,160 @@
         tools:context=".ui.fragments.DetailFragment">
 
     <TextView
-            android:padding="3dp"
-            android:textStyle="bold"
-            android:elevation="1dp"
-            android:textColor="#D1A8A8"
-            android:textSize="13sp"
-            android:text="105 minmmkmfkm;vm vlfdlvkldfv lfdvl vlfdvklnfdvnldfvnflnvfnvlfdnvldfnvmfknv"
+            android:id="@+id/movieDesc"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/textView9"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
             android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar"/>
+            android:elevation="1dp"
+            android:padding="3dp"
+            android:text="105 minmmkmfkm;vm vlfdlvkldfv lfdvl vlfdvklnfdvnldfvnflnvfnvlfdnvldfnvmfknv"
+            android:textColor="#D1A8A8"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/rcMovieImages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
     <TextView
-            android:textStyle="bold"
+            android:id="@+id/movieType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:elevation="1dp"
+            android:text="Action , Adventure and Family "
             android:textColor="#CCB1B1"
             android:textSize="16dp"
-            android:text="Action , Adventure and Family "
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView8"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
-            android:layout_marginTop="16dp"/>
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/movieTitle" />
 
     <TextView
-            android:padding="3dp"
-            android:background="@drawable/duration_shape"
-            android:textStyle="bold"
-            android:elevation="1dp"
-            android:textColor="#fff"
-            android:textSize="12sp"
-            android:text="105 min"
+            android:id="@+id/movieDuration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView7"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
             android:layout_marginStart="60dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"/>
+            android:background="@drawable/duration_shape"
+            android:elevation="1dp"
+            android:padding="3dp"
+            android:text="105 min"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/movieTitle"
+            app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
 
     <TextView
-            android:textStyle="bold"
-            android:elevation="1dp"
-            android:textColor="#000"
-            android:textSize="21dp"
-            android:text="The Lion King 2019"
+            android:id="@+id/movieTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"/>
+            android:elevation="1dp"
+            android:text="The Lion King 2019"
+            android:textColor="#000"
+            android:textSize="21dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/moviePoster"
+            app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
 
     <ImageView
-            android:scaleType="centerCrop"
-            android:src="@drawable/thumbnail"
+            android:id="@+id/moviethumbnail"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:id="@+id/imageView3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thumbnail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-            android:scaleType="fitXY"
-            android:src="@drawable/poster"
+            android:id="@+id/moviePoster"
             android:layout_width="150dp"
             android:layout_height="250dp"
-            android:id="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/poster"
+            app:layout_constraintBottom_toBottomOf="@+id/fabPlay"
+            app:layout_constraintStart_toStartOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/ic_play"
             app:fabCustomSize="70dp"
-            app:maxImageSize="50dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:id="@+id/floatingActionButton"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintVertical_bias="0.515"/>
+            app:layout_constraintBottom_toBottomOf="@+id/moviethumbnail"
+            app:layout_constraintEnd_toEndOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/moviethumbnail"
+            app:layout_constraintVertical_bias="0.515"
+            app:maxImageSize="50dp" />
 
     <RatingBar
-
-            android:rating="4"
+            android:paddingStart="-3dp"
+            android:paddingEnd="5dp"
+            android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:isIndicator="true"
+            android:rating="4"
             android:scaleX="0.8"
             android:scaleY="0.8"
             android:transformPivotX="0dp"
             android:transformPivotY="0dp"
-            android:isIndicator="true"
-            android:id="@+id/ratingBar"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView8"/>
+            app:layout_constraintStart_toStartOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/movieType" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:orientation="horizontal"
+            android:id="@+id/rcMovieImages"
             android:layout_width="0dp"
             android:layout_height="150dp"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="@+id/imageView3"
-            android:id="@+id/recyclerView"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/moviethumbnail"
+            app:layout_constraintStart_toStartOf="@+id/moviethumbnail" />
+
+    <TextView
+
+            android:id="@+id/ratingNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="bottom"
+            android:text="8.7"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@+id/ratingBar"
+            app:layout_constraintTop_toBottomOf="@+id/movieType" />
+
+    <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="6dp"
+            android:text="/10"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingNum"
+            app:layout_constraintStart_toEndOf="@+id/ratingNum" />
+
+    <ImageView
+            android:id="@+id/fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_fav"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingNum"
+            app:layout_constraintEnd_toEndOf="@+id/moviethumbnail"
+            app:layout_constraintTop_toTopOf="@+id/ratingNum" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
