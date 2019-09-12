@@ -2,19 +2,17 @@ package com.moetaz.popularmoviesapp.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 
 
 data class Response(
     val page: Int,
-    val results: List<Result>,
+    val results : List<Movie>,
     val total_pages: Int,
     val total_results: Int
 )
 
 
-data class Result(
+data class Movie(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
@@ -68,9 +66,9 @@ data class Result(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Result> = object : Parcelable.Creator<Result> {
-            override fun createFromParcel(source: Parcel): Result = Result(source)
-            override fun newArray(size: Int): Array<Result?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Movie> = object : Parcelable.Creator<Movie> {
+            override fun createFromParcel(source: Parcel): Movie = Movie(source)
+            override fun newArray(size: Int): Array<Movie?> = arrayOfNulls(size)
         }
     }
 }

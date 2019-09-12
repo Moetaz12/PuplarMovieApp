@@ -6,17 +6,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.activities.MainActivity">
 
-
-
-    <include layout="@layout/app_bar_main"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:id="@+id/toolbarinclude"/>
-
     <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
@@ -25,18 +14,17 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarinclude"
-            app:layout_constraintVertical_bias="0.274" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            app:itemBackground="@color/design_default_color_primary"
-            app:itemIconSize="62dp"
-            android:backgroundTint="@color/design_default_color_primary"
-            app:itemIconTint="@android:color/white"
+            app:itemIconSize="35dp"
+            android:background="@color/colorPrimaryDark"
+            app:itemBackground="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
+            app:itemIconTint="@color/bottom_navigation_item_state"
             app:labelVisibilityMode="unlabeled"
             android:scrollbarSize="11dp"
             app:layout_constraintBottom_toBottomOf="parent"

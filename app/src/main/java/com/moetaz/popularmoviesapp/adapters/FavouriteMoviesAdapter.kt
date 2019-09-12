@@ -1,35 +1,28 @@
 package com.moetaz.popularmoviesapp.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.moetaz.popularmoviesapp.models.Movie
+import com.moetaz.popularmoviesapp.data.Movie
 import com.moetaz.popularmoviesapp.utilities.Utile
 import kotlinx.android.synthetic.main.movie_row.view.*
 
 
-class MoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
-    RecyclerView.Adapter<MoviesAdapter.MyViewHolder>() {
+class FavouriteMoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
+    RecyclerView.Adapter<FavouriteMoviesAdapter.MyViewHolder>() {
 
     private val BaseUrl = "http://image.tmdb.org/t/p/w185/"
 
     interface OnMovieClicked {
         fun onClick(movie: Movie)
-        fun onFavClick(favIcon : ImageView , movie: Movie)
+        fun onFavClick(movie: Movie)
     }
 
-    interface OnMovieLoaded{
-        fun onLoaded(favIcon : ImageView , movie : Movie)
-    }
-
-    //listners
     lateinit var onMovieClicked: OnMovieClicked
-    lateinit var onMovieLoaded: OnMovieLoaded;
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context)
@@ -42,29 +35,29 @@ class MoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val movie = movies.get(position)
         initializeUI(holder, movie)
-        onMovieLoaded.onLoaded(holder.MovieFav , movie)
+        Log.d("fvmkdf","called")
         holder.itemView.setOnClickListener {
             onMovieClicked.onClick(movie)
         }
 
-        holder.MovieFav.setOnClickListener {
-            onMovieClicked.onFavClick(holder.MovieFav ,movie)
+        holder.movieFav.setOnClickListener {
+            onMovieClicked.onClick(movie)
         }
 
     }
 
     private fun initializeUI(holder: MyViewHolder, movie: Movie) {
 
-        holder.title.text = movie.original_title
-        holder.date.text = movie.release_date
+        holder.title.text = movie.title
+        holder.date.text = movie.date
         if (movie.overview.length < 100)
             holder.desc.text = movie.overview
         else
             holder.desc.text = "${movie.overview.substring(0, 100)} ..."
-        holder.rate.text = movie.vote_average.toString()
+        holder.rate.text = movie.voteAverage
 
-        Glide.with(context).load("$BaseUrl${movie.poster_path}").into(holder.posterImage)
-        holder.lang.text = Utile.getLangiage(movie.original_language)
+        Glide.with(context).load("$BaseUrl${movie.posterPath}").into(holder.posterImage)
+        holder.lang.text = Utile.getLangiage(movie.language)
     }
 
     fun setItems(list: ArrayList<Movie>) {
@@ -80,7 +73,7 @@ class MoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
         val desc = view.movieDesc
         val lang = view.lang
         val rate = view.movieRating
-        val MovieFav = view.movieFav
+        val movieFav = view.movieFav
 
     }
 }
