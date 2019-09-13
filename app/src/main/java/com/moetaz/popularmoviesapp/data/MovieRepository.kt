@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 
 class MovieRepository(private val movieDao: MovieDao) {
 
-    val allMovie : LiveData<List<Movie>> = movieDao.getAllMovies()
+    val allMovieData : LiveData<List<MovieData>> = movieDao.getAllMovies()
 
-    suspend fun insert(movie: Movie){
-        movieDao.insert(movie)
+    suspend fun insert(movieData: MovieData){
+        movieDao.insert(movieData)
     }
 
     suspend fun deleteMovie(id: String){
         movieDao.deleteMovie(id)
     }
 
-    fun getMovieById(id : String): LiveData<List<Movie>>{
+    fun getMovieById(id : String): LiveData<List<MovieData>>{
         return movieDao.getMovieById(id)
     }
 

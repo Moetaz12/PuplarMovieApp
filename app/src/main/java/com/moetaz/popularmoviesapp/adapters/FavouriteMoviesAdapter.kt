@@ -1,25 +1,27 @@
 package com.moetaz.popularmoviesapp.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.moetaz.popularmoviesapp.data.Movie
+import com.moetaz.popularmoviesapp.R
+import com.moetaz.popularmoviesapp.data.MovieData
 import com.moetaz.popularmoviesapp.utilities.Utile
 import kotlinx.android.synthetic.main.movie_row.view.*
 
 
-class FavouriteMoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
+class FavouriteMoviesAdapter(val movieData: ArrayList<MovieData>, val context: Context) :
     RecyclerView.Adapter<FavouriteMoviesAdapter.MyViewHolder>() {
 
     private val BaseUrl = "http://image.tmdb.org/t/p/w185/"
+    var firstTime = false
 
     interface OnMovieClicked {
-        fun onClick(movie: Movie)
-        fun onFavClick(movie: Movie)
+        fun onClick(movieData: MovieData)
+        fun onFavClick(movieData: MovieData , position : Int)
     }
 
     lateinit var onMovieClicked: OnMovieClicked
@@ -30,39 +32,55 @@ class FavouriteMoviesAdapter(val movies: ArrayList<Movie>, val context: Context)
         )
     }
 
-    override fun getItemCount() = movies.size
+    override fun getItemCount() = movieData.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val movie = movies.get(position)
+        setAnimation(holder , position)
+
+        val movie = movieData.get(position)
         initializeUI(holder, movie)
-        Log.d("fvmkdf","called")
+
         holder.itemView.setOnClickListener {
             onMovieClicked.onClick(movie)
         }
 
         holder.movieFav.setOnClickListener {
-            onMovieClicked.onClick(movie)
+            onMovieClicked.onFavClick(movie , position)
         }
 
     }
 
-    private fun initializeUI(holder: MyViewHolder, movie: Movie) {
 
-        holder.title.text = movie.title
-        holder.date.text = movie.date
-        if (movie.overview.length < 100)
-            holder.desc.text = movie.overview
-        else
-            holder.desc.text = "${movie.overview.substring(0, 100)} ..."
-        holder.rate.text = movie.voteAverage
 
-        Glide.with(context).load("$BaseUrl${movie.posterPath}").into(holder.posterImage)
-        holder.lang.text = Utile.getLangiage(movie.language)
+    private fun setAnimation(holder: MyViewHolder, position: Int) {
+
+            firstTime = true
+            val slideLeft = AnimationUtils.loadAnimation(context, R.anim.slide_right)
+            val slideright = AnimationUtils.loadAnimation(context, R.anim.slide_left)
+            if (position % 2 == 0)
+                holder.itemView.startAnimation(slideLeft)
+            else
+                holder.itemView.startAnimation(slideright)
     }
 
-    fun setItems(list: ArrayList<Movie>) {
-        movies.clear()
-        this.movies.addAll(list)
+    private fun initializeUI(holder: MyViewHolder, movieData: MovieData) {
+
+        holder.title.text = movieData.title
+        holder.date.text = movieData.date
+        if (movieData.overview.length < 100)
+            holder.desc.text = movieData.overview
+        else
+            holder.desc.text = "${movieData.overview.substring(0, 100)} ..."
+        holder.rate.text = movieData.voteAverage
+
+        Glide.with(context).load("$BaseUrl${movieData.posterPath}").into(holder.posterImage)
+        holder.lang.text = Utile.getLangiage(movieData.language)
+        holder.movieFav.setImageResource(R.drawable.ic_fav)
+    }
+
+    fun setItems(list: ArrayList<MovieData>) {
+        movieData.clear()
+        this.movieData.addAll(list)
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {

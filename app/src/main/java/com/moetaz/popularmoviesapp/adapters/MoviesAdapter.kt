@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.moetaz.popularmoviesapp.R
 import com.moetaz.popularmoviesapp.models.Movie
 import com.moetaz.popularmoviesapp.utilities.Utile
 import kotlinx.android.synthetic.main.movie_row.view.*
@@ -40,6 +42,12 @@ class MoviesAdapter(val movies: ArrayList<Movie>, val context: Context) :
     override fun getItemCount() = movies.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val slideLeft = AnimationUtils.loadAnimation(context, R.anim.slide_right)
+        val slideright = AnimationUtils.loadAnimation(context, R.anim.slide_left)
+        if (position % 2 == 0)
+        holder.itemView.startAnimation(slideLeft)
+        else
+            holder.itemView.startAnimation(slideright)
         val movie = movies.get(position)
         initializeUI(holder, movie)
         onMovieLoaded.onLoaded(holder.MovieFav , movie)

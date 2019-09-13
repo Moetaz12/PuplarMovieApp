@@ -1,17 +1,21 @@
 package com.moetaz.popularmoviesapp.ui.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moetaz.popularmoviesapp.R
 import com.moetaz.popularmoviesapp.adapters.FavouriteMoviesAdapter
-import com.moetaz.popularmoviesapp.data.Movie
+import com.moetaz.popularmoviesapp.data.MovieData
+import com.moetaz.popularmoviesapp.models.Movie
+import com.moetaz.popularmoviesapp.ui.activities.DetailActivity
 import com.moetaz.popularmoviesapp.viewmodel.FavouriteMoviesViewModel
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_movies_list.*
@@ -20,16 +24,29 @@ import kotlinx.android.synthetic.main.fragment_movies_list.*
  * A simple [Fragment] subclass.
  */
 class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
-    override fun onFavClick(movie: Movie) {
-
+    override fun onFavClick(movieData: MovieData , position: Int) {
+        favouriteMoviesViewModel.deleteMovie(movieData.id);
+        movies.removeAt(position)
+        moviesAdapter.notifyItemRemoved(position)
+        moviesAdapter.notifyItemRangeChanged(position , moviesAdapter.itemCount -1)
     }
 
-    override fun onClick(movie: Movie) {
+    override fun onClick(
+        movieData: MovieData
+    ) {
 
+        startActivity(
+            Intent(activity, DetailActivity::class.java)
+                .putExtra("movie", Movie(false,
+                    "",ArrayList<Int>(),movieData.id.toInt(),movieData.language ,movieData.title,movieData.overview,
+                    0.0,movieData.posterPath, movieData.date , movieData.title , false , movieData.voteAverage.toDouble(),
+                    1)
+                )
+        )
     }
 
     private lateinit var favouriteMoviesViewModel: FavouriteMoviesViewModel
-    var movies: ArrayList<Movie> = ArrayList()
+    var movies: ArrayList<MovieData> = ArrayList()
 
     lateinit var moviesAdapter: FavouriteMoviesAdapter
 
@@ -58,5 +75,24 @@ class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
         moviesAdapter.onMovieClicked = this
     }
 
+    private fun setButtonBackClick() {
+        backBtn.setOnClickListener {
+            backBtn.visibility = View.INVISIBLE
+            app_bar_title.visibility = View.VISIBLE
+            imageView_search.visibility = View.VISIBLE
+            edittext_search.visibility = View.INVISIBLE
+        }
+    }
 
+    private fun setImageSearchClick() {
+
+        val slideLeft = AnimationUtils.loadAnimation(activity, R.anim.slide_left)
+        imageView_search.setOnClickListener {
+            backBtn.visibility = View.VISIBLE
+            backBtn.startAnimation(slideLeft)
+            app_bar_title.visibility = View.INVISIBLE
+            imageView_search.visibility = View.INVISIBLE
+            edittext_search.visibility = View.VISIBLE
+        }
+    }
 }

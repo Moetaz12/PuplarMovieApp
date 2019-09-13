@@ -9,13 +9,13 @@ import androidx.room.Query
 @Dao
 interface MovieDao {
     @Query("SELECT * from favourite_movies ORDER BY id ASC")
-    fun getAllMovies(): LiveData<List<Movie>>
+    fun getAllMovies(): LiveData<List<MovieData>>
 
     @Query("SELECT * from favourite_movies WHERE id = :mid ")
-    fun getMovieById(mid :String): LiveData<List<Movie>>
+    fun getMovieById(mid :String): LiveData<List<MovieData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(movie: Movie)
+    suspend fun insert(movieData: MovieData)
 
     @Query("DELETE FROM favourite_movies")
     suspend fun deleteAll()
