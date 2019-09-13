@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moetaz.popularmoviesapp.R
 import com.moetaz.popularmoviesapp.adapters.MoviesAdapter
+import com.moetaz.popularmoviesapp.data.MovieData
 import com.moetaz.popularmoviesapp.models.Movie
 import com.moetaz.popularmoviesapp.ui.activities.DetailActivity
 import com.moetaz.popularmoviesapp.utilities.Constants
@@ -42,9 +43,11 @@ class PopularMoviesFragment : Fragment(), MoviesAdapter.OnMovieClicked,
         favouriteMoviesViewModel.getMovieById(movie.id.toString())
             .observe(viewLifecycleOwner, Observer {
                 if (it.isNotEmpty()) {
+                    movie.isFav = true
                     favIcon.setTag("fav")
                     favIcon.setImageResource(com.moetaz.popularmoviesapp.R.drawable.ic_fav)
                 } else {
+                    movie.isFav = false
                     favIcon.setTag("unfav")
                     favIcon.setImageResource(com.moetaz.popularmoviesapp.R.drawable.ic_unfav)
                 }
@@ -55,8 +58,9 @@ class PopularMoviesFragment : Fragment(), MoviesAdapter.OnMovieClicked,
     override fun onFavClick(favIcon: ImageView, movie: Movie) {
         if (favIcon.tag.equals("unfav")) {
             favIcon.tag = "fav"
+            movie.isFav = true
             favouriteMoviesViewModel.insert(
-                com.moetaz.popularmoviesapp.data.MovieData(
+                MovieData(
                     movie.id.toString(),
                     movie.original_language,
                     movie.overview,
@@ -67,6 +71,7 @@ class PopularMoviesFragment : Fragment(), MoviesAdapter.OnMovieClicked,
                 )
             )
         } else {
+            movie.isFav = false
             favIcon.tag = "unfav"
             favouriteMoviesViewModel.deleteMovie(movie.id.toString())
         }

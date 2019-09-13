@@ -3,6 +3,8 @@ package com.moetaz.popularmoviesapp.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +39,7 @@ class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
 
         startActivity(
             Intent(activity, DetailActivity::class.java)
-                .putExtra("movie", Movie(false,
+                .putExtra("movie", Movie(true,false,
                     "",ArrayList<Int>(),movieData.id.toInt(),movieData.language ,movieData.title,movieData.overview,
                     0.0,movieData.posterPath, movieData.date , movieData.title , false , movieData.voteAverage.toDouble(),
                     1)
@@ -47,6 +49,7 @@ class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
 
     private lateinit var favouriteMoviesViewModel: FavouriteMoviesViewModel
     var movies: ArrayList<MovieData> = ArrayList()
+    var movies2: ArrayList<MovieData> = ArrayList()
 
     lateinit var moviesAdapter: FavouriteMoviesAdapter
 
@@ -70,9 +73,28 @@ class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
         favouriteMoviesViewModel.allWords.observe(viewLifecycleOwner, Observer {
             movies.clear()
             movies.addAll(it)
+            movies2.clear()
+            movies2.addAll(it)
             moviesAdapter.notifyDataSetChanged()
         })
+        edittext_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                movies.clear()
+                movies.addAll(movies2)
+                moviesAdapter.setItems(getSerachResult(movies, "$s"))
+                moviesAdapter.notifyDataSetChanged()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         moviesAdapter.onMovieClicked = this
+        setButtonBackClick()
+        setImageSearchClick()
     }
 
     private fun setButtonBackClick() {
@@ -94,5 +116,14 @@ class FavouriteFragment : Fragment() , FavouriteMoviesAdapter.OnMovieClicked {
             imageView_search.visibility = View.INVISIBLE
             edittext_search.visibility = View.VISIBLE
         }
+    }
+
+    private fun getSerachResult(list: ArrayList<MovieData>, key: String): ArrayList<MovieData> {
+        var temp: ArrayList<MovieData> = ArrayList()
+        for (movie in list) {
+            if (movie.title.toLowerCase().contains(key))
+                temp.add(movie)
+        }
+        return temp
     }
 }

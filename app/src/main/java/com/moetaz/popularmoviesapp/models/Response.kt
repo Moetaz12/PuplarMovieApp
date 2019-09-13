@@ -13,6 +13,7 @@ data class Response(
 
 
 data class Movie(
+    var isFav : Boolean,
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
@@ -29,6 +30,7 @@ data class Movie(
     val vote_count: Int
 ) : Parcelable {
     constructor(source: Parcel) : this(
+        1 == source.readInt(),
         1 == source.readInt(),
         source.readString(),
         ArrayList<Int>().apply { source.readList(this, Int::class.java.classLoader) },
@@ -48,6 +50,7 @@ data class Movie(
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeInt((if (isFav) 1 else 0))
         writeInt((if (adult) 1 else 0))
         writeString(backdrop_path)
         writeList(genre_ids)
